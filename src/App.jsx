@@ -8,7 +8,7 @@ function App() {
   // 날씨 요청 함수
   const fetchWeather = () => {
     
-    const apiKey = 'e11462160015cffa69954c9f67741b7b';
+    const apiKey = 'API키값입력';
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${'seoul'}&appid=${apiKey}`;
 
     fetch(url)
@@ -19,6 +19,7 @@ function App() {
   }
 
   fetchWeather();
+  
 
 
   return (
