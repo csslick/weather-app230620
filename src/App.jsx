@@ -8,9 +8,32 @@ function App() {
   const [weather, setWeather] = useState(null); // 날씨 데이터 null 값이 비었음을 명시적 선언
   const [error, setError] = useState(false); // 에러 상태 true | false
 
+  // 타임스탬프를 한국 시간(12시간제)으로 변환하는 함수
+  const convertTimestampToTime = (timestamp) => {
+    const koreaTimezoneOffset = 9 * 60; // 한국 시간대 오프셋(분 단위)
+    const koreaTimezone = new Date().getTimezoneOffset() + koreaTimezoneOffset;
+
+    const date = new Date(timestamp * 1000); // 타임스탬프를 밀리초 단위로 변환
+    const utcHours = date.getUTCHours();
+    const utcMinutes = date.getUTCMinutes();
+    let koreaHours = utcHours + Math.floor(koreaTimezone / 60);
+    const koreaMinutes = utcMinutes + koreaTimezone % 60;
+    let period = 'AM'; // 오전 기본값
+
+    // 12시간제 적용
+    if (koreaHours >= 12) {
+      period = 'PM';
+      if (koreaHours > 12) {
+        koreaHours -= 12;
+      }
+    }
+
+    return `${koreaHours < 10 ? '0' + koreaHours : koreaHours}:${koreaMinutes < 10 ? '0' + koreaMinutes : koreaMinutes} ${period}`;
+  };
+
   // 날씨 요청 함수
   const fetchWeather = () => {
-    
+
     const apiKey = '5e3dd9073954b1f47758e6b5849178d4';
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}`;
 
@@ -20,7 +43,7 @@ function App() {
       .then(data => {
         setError(false);
         // 검색 결과가 없을 때 
-        if(data.cod === '404') {
+        if (data.cod === '404') {
           setWeather(null);
           setError(true);  // 에러남
           return;
@@ -57,7 +80,15 @@ function App() {
         handleLocationChange={handleLocationChange}
         location={location}
       />
-      <Weather weather={weather} error={error}/>
+      <Weather weather={weather} error={error} />
+
+      {weather && (
+        <div>
+          <p>일출: {convertTimestampToTime(weather.sys.sunrise)}</p>
+          <p>일몰: {convertTimestampToTime(weather.sys.sunset)}</p>
+        </div>
+      )}
+
     </div>
   )
 }
