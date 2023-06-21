@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import Search from './components/Search';
+import Weather from './components/Weather';
 
 function App() {
   const [location, setLocation] = useState(''); // 검색어
@@ -53,15 +54,7 @@ function App() {
         handleLocationChange={handleLocationChange}
         location={location}
       />
-      {
-        weather && (
-          <div>
-              <h2>{weather.name}</h2>
-              <p>현재온도: {weather.main.temp}</p>
-              <p>설명: {weather.weather[0].description}</p>
-          </div>
-        )  
-      }
+      <Weather weather={weather}/>
     </div>
   )
 }
