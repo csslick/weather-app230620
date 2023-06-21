@@ -6,6 +6,7 @@ import Weather from './components/Weather';
 function App() {
   const [location, setLocation] = useState(''); // 검색어
   const [weather, setWeather] = useState(null); // 날씨 데이터 null 값이 비었음을 명시적 선언
+  const [error, setError] = useState(false); // 에러 상태 true | false
 
   // 날씨 요청 함수
   const fetchWeather = () => {
@@ -17,9 +18,11 @@ function App() {
     fetch(url)
       .then(res => res.json())  // json포맷으로 변환
       .then(data => {
+        setError(false);
         // 검색 결과가 없을 때 
         if(data.cod === '404') {
-          setWeather(null)
+          setWeather(null);
+          setError(true);  // 에러남
           return;
         }
         setWeather(data);
@@ -54,7 +57,7 @@ function App() {
         handleLocationChange={handleLocationChange}
         location={location}
       />
-      <Weather weather={weather}/>
+      <Weather weather={weather} error={error}/>
     </div>
   )
 }

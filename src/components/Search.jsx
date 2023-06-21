@@ -10,19 +10,19 @@ function Search(props) {
 
   return (
     <form onSubmit={handleWeatherSearch}>
-    <div className="input-group">
-      <input 
-        type="search" 
-        value={location}
-        placeholder='위치를 입력'
-        required
-        onChange={handleLocationChange}
-      />
-      <button 
-        className='btn' 
-        type='submit'
-      >검색</button>
-    </div>
+      <div className="input-group">
+        <input 
+          type="search" 
+          value={location}
+          placeholder='위치를 입력'
+          required
+          onChange={handleLocationChange}
+        />
+        <button 
+          className='btn' 
+          type='submit'
+        >검색</button>
+      </div>
   </form>
   )
 }
